@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8"> <!-- Page encoding -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design -->
+    <title>Image Comparision</title> <!-- Page title -->
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body ko center mein dikhane ke liye grid use kiya gaya hai */
+        body {
+            height: 100vh;
+            display: grid;
+            place-items: center; /* Vertically aur horizontally center */
+        }
+
+        /* Container jisme images aur slider hoga */
+        .container {
+            height: 67.5vmin; /* Viewport ke size ke hisaab se height */
+            width: 95vmin;    /* Proportion maintain karne ke liye */
+            position: relative;
+            overflow: hidden; /* Jo image bahar jaaye usse hide karo */
+        }
+
+        /* Dono images full container ke size mein dikhengi */
+        img {
+            width: 100%;
+            height: 100%;
+            position: absolute; /* Ek ke upar ek image rakhne ke liye */
+        }
+
+        /* Second image ko half clip kiya gaya hai using clip-path */
+        #my-img {
+            /* Sirf left portion visible hoga (initial 50%) */
+            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+        }
+
+        /* Slider ka style */
+        #slider {
+            position: relative;
+            -webkit-appearance: none; /* Default browser style remove */
+            appearance: none; /* Standard property for compatibility */
+            width: calc(100% + 40px); /* Slider thoda bada kiya gaya hai */
+            height: 100%;
+            margin-left: -20px; /* Center align karne ke liye shift */
+            background-color: transparent;
+            outline: none;
+        }
+
+        /* Slider ke thumb (button) ka custom design */
+        #slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 40px;
+            width: 40px;
+            background: url("slider-icon.svg"), rgba(255, 255, 255, 0.3); /* Image + transparent bg */
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            background-size: contain;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Main Image Container -->
+    <div class="container">
+        <img src="image-1.png" alt="Shoe Red"> <!-- Pehli image background mein -->
+        <img src="image-2.png" id="my-img" alt="Shoe Green"> <!-- Dusri image (clip-path ke saath) -->
+
+        <!-- Slider input jisse clip-path adjust hota hai -->
+        <input type="range" id="slider" min="0" max="100" value="50" oninput="slide()">
+    </div>
+
+    <!-- JavaScript code -->
+    <script>
+        // Slider move hone par yeh function call hoga
+        function slide() {
+            // Slider ki current value le rahe hain (0 to 100)
+            let slideValue = document.getElementById("slider").value;
+
+            // Us value ke hisaab se image-2 ki clip-path update kar rahe hain
+            document.getElementById("my-img").style.clipPath =
+                "polygon(0 0," + slideValue + "% 0, " + slideValue + "% 100%, 0 100%)";
+        }
+
+        // Page load hote hi ek baar function call kar dete hain
+        slide();
+    </script>
+</body>
+
+</html>
